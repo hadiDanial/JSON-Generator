@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows;
+using Microsoft.Win32;
+using System.IO;
 
 namespace JSON_Generator
     {
@@ -24,5 +27,27 @@ namespace JSON_Generator
             {
             InitializeComponent();
             }
+
+        private void AddBtn_Click(object sender, RoutedEventArgs e)
+            {
+            AddEntry addWin = new AddEntry();
+            addWin.Show();
+            addWin.Closed += AddWin_Closed;
+            this.IsEnabled = false;
+            }
+
+        private void AddWin_Closed(object sender, EventArgs e)
+            {
+            this.IsEnabled = true;
+            }
+
+        private void OpenBtn_Click(object sender, RoutedEventArgs e)
+            {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "JSON (*.json;*.txt)|*.json;*.txt|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+                textBox.Text = File.ReadAllText(openFileDialog.FileName);
+            }
         }
     }
+    
