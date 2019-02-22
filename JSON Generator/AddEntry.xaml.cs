@@ -12,9 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows;
 using Microsoft.Win32;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace JSON_Generator
     {
@@ -39,7 +39,8 @@ namespace JSON_Generator
         private void addBlogBtn_Click(object sender, RoutedEventArgs e)
             {
             Blog blog = new Blog(blogTitle.Text, blogDesc.Text, coverImgName.Content.ToString());
-            Preview.Text = blog.ToString();
+            Preview.Text = JsonConvert.SerializeObject(blog);
+                //blog.ToString();
             }
         }
     }

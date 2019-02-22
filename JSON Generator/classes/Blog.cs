@@ -2,12 +2,12 @@
 
 public class Blog
 {
-    public string _title;
-    public string _description;
-    public string _coverImage;
-    public DateTime _date;
-    public string _path;
-    public string _html;
+    public string title;
+    public string description;
+    public string coverImage;
+    //public DateTime date;
+    public string date;
+    public string path;
     /// <summary>
     /// Creates a new blog object.
     /// </summary>
@@ -17,12 +17,27 @@ public class Blog
     /// <param name="images">List of images in the blog (paths)</param>
     public Blog(string title, string description, string coverImage)
         {
-        _title = title;
-        _description = description;
-        _date = DateTime.Now;
-        _path = "/" + _date.Month + "." + _date.Year + "/" + FormatTitle(_title) + "/";
-        _html = _path + FormatTitle(_title) + ".html";
-        _coverImage = _path + FormatImgPath(coverImage);
+        this.title = title;
+        this.description = description;
+        DateTime d = DateTime.Now;
+        date = d.Day + "." + d.Month + "." + d.Year;
+        path = "/" + d.Month + "." + d.Year + "/" + FormatTitle(this.title) + "/";
+        this.coverImage = coverImage;
+        }
+    /// Creates a new blog object.
+    /// </summary>
+    /// <param name="title">Title of the blog</param>
+    /// <param name="description">Short description</param>
+    /// <param name="texts">List of texts in the blog</param>
+    /// <param name="images">List of images in the blog (paths)</param>
+    public Blog(string title, string description, string path, string coverImage)
+        {
+        this.title = title;
+        this.description = description;
+        DateTime d = DateTime.Now;
+        date = d.Day + "." + d.Month + "." + d.Year;
+        this.path = path;
+        this.coverImage = coverImage;//path + FormatImgPath(coverImage);
         }
 
     private string FormatImgPath(string img)
@@ -42,6 +57,6 @@ public class Blog
 
     public override string ToString()
         {
-        return _title + " " + _path;
+        return title + " " + path;
         }
     }
