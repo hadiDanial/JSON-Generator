@@ -71,7 +71,7 @@ namespace JSON_Generator
                 writer.WriteLine(textBox.Text);
                 writer.Dispose();
                 writer.Close();
-                }          
+                }
             }
 
         private void openFolderBtn_Click(object sender, RoutedEventArgs e)
@@ -91,25 +91,31 @@ namespace JSON_Generator
                 {
                 posts = new List<Post>();
                 ProcessDirectory(folderPath, folderPath, true);
-                textBox.Text = "[\n";
-                for (int i = 0; i < posts.Count; i++)
-                    {
-                    if(i == posts.Count - 1)
-                        {
-                        textBox.Text += JsonConvert.SerializeObject(posts[i]);
-                        }
-                    else
-                        {
-                    textBox.Text += JsonConvert.SerializeObject(posts[i],Formatting.Indented) + ",\n";
-                        }
-                    }
-
-                textBox.Text += "\n]";
+                GenerateJSON();
                 }
             else
                 {
                 MessageBoxResult result = System.Windows.MessageBox.Show("No folder selected.", "Error");
                 }
+            }
+
+        private void GenerateJSON(bool clear = false)
+            {
+            if (clear) textBox.Text = "";
+            textBox.Text += "[\n";
+            for (int i = 0; i < posts.Count; i++)
+                {
+                if (i == posts.Count - 1)
+                    {
+                    textBox.Text += JsonConvert.SerializeObject(posts[i], Formatting.Indented);
+                    }
+                else
+                    {
+                    textBox.Text += JsonConvert.SerializeObject(posts[i], Formatting.Indented) + ",\n";
+                    }
+                }
+
+            textBox.Text += "\n]";
             }
 
         /// <summary>
@@ -194,22 +200,37 @@ namespace JSON_Generator
             return taggedText;
             }
 
-        public void AddBlog(string newBlog)
-            {
-            textBox.Text.Remove(textBox.Text.Length - 1);
-            textBox.Text += ", \n" + newBlog + "\n]";
-            }
-
         private void aboutBtn_Click(object sender, RoutedEventArgs e)
             {
-            MessageBoxResult result = System.Windows.MessageBox.Show("JSON Generator loops through a directory and creates a JSON file based on the criterea defined for my personal website. \nMade by Hadi Danial, "+ version, "About");
+            MessageBoxResult result = System.Windows.MessageBox.Show("JSON Generator loops through a directory and creates a JSON file based on the criteria defined for my personal website. \nMade by Hadi Danial, " + version, "About");
+            }
+
+        private void sortBtn_Click(object sender, RoutedEventArgs e)
+            {
+            if (folderPath != null && folderPath != "")
+                {
+                if (posts == null || posts.Count == 0)
+                    {
+                    MessageBoxResult result = System.Windows.MessageBox.Show("JSON is empty. Please generate.", "Error");
+                    }
+                else
+                    {
+                    List<Post> SortedList = posts.OrderByDescending(o => o.date).ToList();
+                    posts = SortedList;
+                    GenerateJSON(true);
+                    }
+                }
+            else
+                {
+                MessageBoxResult result = System.Windows.MessageBox.Show("No folder selected.", "Error");
+                }
             }
         }
 
 
-    
+
     }
 
-        
-    
-    
+
+
+

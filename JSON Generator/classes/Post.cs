@@ -5,10 +5,10 @@ public class Post
 {
     public string title;
     public string description;
+    public string date;
     public List<string> tags;
     public string coverImage;
     //public DateTime date;
-    public string date;
     public string path;
 
     private string[] dateFormats = { "dd-MM-yyyy", "d-M-yyyy", "dd-M-yyyy", "d-MM-yyyy", "dd.MM.yyyy", "d.M.yyyy", "dd.M.yyyy", "d.MM.yyyy", "dd/MM/yyyy", "d/M/yyyy", "dd/M/yyyy", "d/MM/yyyy" };
