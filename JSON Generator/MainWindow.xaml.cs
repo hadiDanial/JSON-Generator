@@ -25,10 +25,12 @@ namespace JSON_Generator
     public partial class MainWindow : Window
         {
         string folderPath;
-        List<string> list;
-        List<Blog> blogs;
+        List<Post> posts;
 
+        const string titleTag = "*.title";
         const string descriptionTag = "*.desc";
+        const string tagTag = "*.tags";
+        const string version = "v.1.1";
 
         public MainWindow()
             {
@@ -61,16 +63,20 @@ namespace JSON_Generator
             Microsoft.Win32.SaveFileDialog save = new Microsoft.Win32.SaveFileDialog();
             save.Filter = "JSON (*.json)|*.json|Text (*.txt)|*.txt|All files (*.*)|*.*";
             save.Title = "Save File";
-            save.ShowDialog();
-            StreamWriter writer = new StreamWriter(save.OpenFile());
-            writer.WriteLine(textBox.Text);
-            writer.Dispose();
-            writer.Close();
+            //save.ShowDialog();
+            if (save.ShowDialog() == true)
+                {
+                StreamWriter writer = new StreamWriter(save.OpenFile());
+                writer.WriteLine(textBox.Text);
+                writer.Dispose();
+                writer.Close();
+                }          
             }
 
         private void openFolderBtn_Click(object sender, RoutedEventArgs e)
             {
             FolderBrowserDialog diag = new FolderBrowserDialog();
+            diag.ShowNewFolderButton = false;
             if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                 folderPath = diag.SelectedPath;
@@ -82,19 +88,18 @@ namespace JSON_Generator
             {
             if (folderPath != null && folderPath != "")
                 {
-                list = new List<string>();
-                blogs = new List<Blog>();
+                posts = new List<Post>();
                 ProcessDirectory(folderPath, folderPath, true);
                 textBox.Text = "[\n";
-                for (int i = 0; i < blogs.Count; i++)
+                for (int i = 0; i < posts.Count; i++)
                     {
-                    if(i == blogs.Count - 1)
+                    if(i == posts.Count - 1)
                         {
-                        textBox.Text += JsonConvert.SerializeObject(blogs[i]);
+                        textBox.Text += JsonConvert.SerializeObject(posts[i]);
                         }
                     else
                         {
-                    textBox.Text += JsonConvert.SerializeObject(blogs[i]) + ",\n";
+                    textBox.Text += JsonConvert.SerializeObject(posts[i],Formatting.Indented) + ",\n";
                         }
                     }
 
@@ -120,29 +125,33 @@ namespace JSON_Generator
                 {
                 if (fileName.ToLower().EndsWith(".html"))
                     {
-                    list.Add(fileName.Replace(sourcePath, ""));
-                    Blog b;
-                    string title = fileName.Replace(sourceDirectory+"\\","").Replace("_"," ");
+                    //list.Add(fileName.Replace(sourcePath, ""));
+                    Post p;
+                    string title;
                     string path = fileName.Replace(sourcePath, "");
                     string descFile = fileName.Replace(".html", ".txt");
                     string desc = "";
+                    string tags = "";
                     if (File.Exists(descFile))
                         {
-                        desc = File.ReadAllText(descFile);
-                        int pFrom = desc.IndexOf(descriptionTag) + descriptionTag.Length;
-                        int pTo = desc.LastIndexOf(descriptionTag);
-
-                        desc = desc.Substring(pFrom, pTo - pFrom);
+                        string text = File.ReadAllText(descFile);
+                        title = GetTaggedText(text, titleTag);
+                        desc = GetTaggedText(text, descriptionTag);
+                        tags = GetTaggedText(text, tagTag);
                         }
-                    string[] p = path.Split('\\');
-                    string cleanPath = "";
-                    for (int i = 0; i < p.Length - 1; i++)
+                    else
                         {
-                        cleanPath += p[i] + "\\";
+                        title = fileName.Replace(sourceDirectory + "\\", "").Replace("_", " ").Replace(".html", "");
+                        }
+                    string[] splitPath = path.Split('\\');
+                    string cleanPath = "";
+                    for (int i = 0; i < splitPath.Length - 1; i++)
+                        {
+                        cleanPath += splitPath[i] + "\\";
                         }
                     string coverImage = cleanPath + "coverImg.png";
-                    b = new Blog(title, desc, path, coverImage);
-                    blogs.Add(b);
+                    p = new Post(title, desc, path, coverImage, tags);
+                    posts.Add(p);
                     }
                 }
 
@@ -161,12 +170,35 @@ namespace JSON_Generator
                 }
             }
 
+        private static string GetTaggedText(string text, string tag)
+            {
+            int pFrom = text.IndexOf(tag) + tag.Length;
+            int pTo = text.LastIndexOf(tag);
+            string taggedText;
+            if (pTo != -1)
+                {
+                taggedText = text.Substring(pFrom, pTo - pFrom);
+                if (taggedText[0] == ' ') taggedText.Remove(0, 1);
+                if (taggedText[taggedText.Length - 1] == ' ') taggedText.Remove(taggedText.Length - 1);
+                }
+            else
+                {
+                taggedText = "";
+                }
+
+            return taggedText;
+            }
+
         public void AddBlog(string newBlog)
             {
             textBox.Text.Remove(textBox.Text.Length - 1);
             textBox.Text += ", \n" + newBlog + "\n]";
             }
 
+        private void aboutBtn_Click(object sender, RoutedEventArgs e)
+            {
+            MessageBoxResult result = System.Windows.MessageBox.Show("JSON Generator loops through a directory and creates a JSON file based on the criterea defined for my personal website. \nMade by Hadi Danial, "+ version, "About");
+            }
         }
 
 

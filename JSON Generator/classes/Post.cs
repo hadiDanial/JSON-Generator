@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
-public class Blog
+public class Post
 {
     public string title;
     public string description;
+    public List<string> tags;
     public string coverImage;
     //public DateTime date;
     public string date;
@@ -15,7 +17,7 @@ public class Blog
     /// <param name="description">Short description</param>
     /// <param name="texts">List of texts in the blog</param>
     /// <param name="images">List of images in the blog (paths)</param>
-    public Blog(string title, string description, string coverImage)
+    public Post(string title, string description, string coverImage, string tags)
         {
         this.title = title;
         this.description = description;
@@ -23,6 +25,7 @@ public class Blog
         date = d.Day + "." + d.Month + "." + d.Year;
         path = "/" + d.Month + "." + d.Year + "/" + FormatTitle(this.title) + "/";
         this.coverImage = coverImage;
+        this.tags = CreateTags(tags);
         }
     /// Creates a new blog object.
     /// </summary>
@@ -30,7 +33,7 @@ public class Blog
     /// <param name="description">Short description</param>
     /// <param name="texts">List of texts in the blog</param>
     /// <param name="images">List of images in the blog (paths)</param>
-    public Blog(string title, string description, string path, string coverImage)
+    public Post(string title, string description, string path, string coverImage, string tags)
         {
         this.title = title;
         this.description = description;
@@ -38,6 +41,17 @@ public class Blog
         date = d.Day + "." + d.Month + "." + d.Year;
         this.path = path;
         this.coverImage = coverImage;//path + FormatImgPath(coverImage);
+        this.tags = CreateTags(tags);
+        }
+
+    /// <summary>
+    /// Creates tags from a string. Each tag should be separated from the next by a comma.
+    /// </summary>
+    /// <param name="tags">Tag string</param>
+    /// <returns></returns>
+    private List<string> CreateTags(string tags)
+        {
+        return new List<string>(tags.Replace(", ",",").Split(','));
         }
 
     private string FormatImgPath(string img)

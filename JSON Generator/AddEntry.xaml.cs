@@ -38,8 +38,8 @@ namespace JSON_Generator
 
         private void addBlogBtn_Click(object sender, RoutedEventArgs e)
             {
-            Blog blog = new Blog(blogTitle.Text, blogDesc.Text, coverImgName.Content.ToString());
-            Preview.Text = JsonConvert.SerializeObject(blog);
+            //Post blog = new Post(blogTitle.Text, blogDesc.Text, coverImgName.Content.ToString());
+            //Preview.Text = JsonConvert.SerializeObject(blog);
                 //blog.ToString();
             }
         }
