@@ -31,7 +31,7 @@ namespace JSON_Generator
         const string descriptionTag = "*.desc";
         const string tagTag = "*.tags";
         const string dateTag = "*.date";
-        const string version = "v.1.1";
+        const string version = "v.1.2";
 
         public MainWindow()
             {
