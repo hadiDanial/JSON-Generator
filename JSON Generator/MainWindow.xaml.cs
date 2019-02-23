@@ -30,6 +30,7 @@ namespace JSON_Generator
         const string titleTag = "*.title";
         const string descriptionTag = "*.desc";
         const string tagTag = "*.tags";
+        const string dateTag = "*.date";
         const string version = "v.1.1";
 
         public MainWindow()
@@ -132,12 +133,15 @@ namespace JSON_Generator
                     string descFile = fileName.Replace(".html", ".txt");
                     string desc = "";
                     string tags = "";
+                    string date = "";
                     if (File.Exists(descFile))
                         {
                         string text = File.ReadAllText(descFile);
                         title = GetTaggedText(text, titleTag);
                         desc = GetTaggedText(text, descriptionTag);
                         tags = GetTaggedText(text, tagTag);
+                        date = GetTaggedText(text, dateTag);
+                        date.Replace(" ", "");
                         }
                     else
                         {
@@ -150,7 +154,7 @@ namespace JSON_Generator
                         cleanPath += splitPath[i] + "\\";
                         }
                     string coverImage = cleanPath + "coverImg.png";
-                    p = new Post(title, desc, path, coverImage, tags);
+                    p = new Post(title, desc, path, coverImage, tags, date);
                     posts.Add(p);
                     }
                 }
@@ -178,6 +182,7 @@ namespace JSON_Generator
             if (pTo != -1)
                 {
                 taggedText = text.Substring(pFrom, pTo - pFrom);
+                taggedText.Replace("  ", " ");
                 if (taggedText[0] == ' ') taggedText.Remove(0, 1);
                 if (taggedText[taggedText.Length - 1] == ' ') taggedText.Remove(taggedText.Length - 1);
                 }
