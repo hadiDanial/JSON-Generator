@@ -99,6 +99,10 @@ namespace JSON_Generator
                 }
             }
 
+        /// <summary>
+        /// Generates JSON from the posts list.
+        /// </summary>
+        /// <param name="clear">Clear the text box?</param>
         private void GenerateJSON(bool clear = false)
             {
             if (clear) textBox.Text = "";
@@ -119,10 +123,11 @@ namespace JSON_Generator
             }
 
         /// <summary>
-        /// This function is used to iterate through the main folder and
+        /// This function is used to recursively iterate through the main folder and
         /// (if applicable) the subfolders to look for *.html files to add to the JSON.
         /// </summary>
         /// <param name="sourceDirectory">Directory to iterate through.</param>
+        /// <param name="sourcePath">Use same as sourceDirectory.</param>
         /// <param name="processSubFolders">True if recursive teration thru subfolders is required.</param>
         public void ProcessDirectory(string sourceDirectory, string sourcePath, bool processSubFolders)
             {
@@ -165,8 +170,6 @@ namespace JSON_Generator
                     }
                 }
 
-            // Self-recursion to loop through the folder structure until
-            // the folder depth has reached the recursion level value.
             if (processSubFolders)
                 {
                 string[] subdirEntries = Directory.GetDirectories(sourceDirectory);
