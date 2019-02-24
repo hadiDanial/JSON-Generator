@@ -141,13 +141,23 @@ namespace JSON_Generator
                     Post p;
                     string title;
                     string path = fileName.Replace(sourcePath, "");
-                    string descFile = fileName.Replace(".html", ".txt");
+                    string descFileMD = fileName.Replace(".html", ".md");
+                    string descFileText = fileName.Replace(".html", ".txt");
                     string desc = "";
                     string tags = "";
                     string date = "";
-                    if (File.Exists(descFile))
+                    if (File.Exists(descFileMD))
                         {
-                        string text = File.ReadAllText(descFile);
+                        string text = File.ReadAllText(descFileMD);
+                        title = GetTaggedText(text, titleTag);
+                        desc = GetTaggedText(text, descriptionTag);
+                        tags = GetTaggedText(text, tagTag);
+                        date = GetTaggedText(text, dateTag);
+                        date.Replace(" ", "");
+                        }
+                    else if (File.Exists(descFileText))
+                        {
+                        string text = File.ReadAllText(descFileText);
                         title = GetTaggedText(text, titleTag);
                         desc = GetTaggedText(text, descriptionTag);
                         tags = GetTaggedText(text, tagTag);
