@@ -27,11 +27,11 @@ namespace JSON_Generator
         string folderPath;
         List<Post> posts;
 
-        const string titleTag = "*.title";
-        const string descriptionTag = "*.desc";
-        const string tagTag = "*.tags";
-        const string dateTag = "*.date";
-        const string version = "v.1.2";
+        const string titleTag = "*.title*";
+        const string descriptionTag = "*.desc*";
+        const string tagTag = "*.tags*";
+        const string dateTag = "*.date*";
+        const string version = "v.1.2.1";
 
         public MainWindow()
             {
