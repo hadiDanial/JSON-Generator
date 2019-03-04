@@ -31,7 +31,7 @@ namespace JSON_Generator
         const string descriptionTag = "*.desc*";
         const string tagTag = "*.tags*";
         const string dateTag = "*.date*";
-        const string version = "v.1.2.1";
+        const string version = "v.1.2.2";
 
         public MainWindow()
             {
@@ -146,37 +146,43 @@ namespace JSON_Generator
                     string desc = "";
                     string tags = "";
                     string date = "";
-                    if (File.Exists(descFileMD))
-                        {
-                        string text = File.ReadAllText(descFileMD);
-                        title = GetTaggedText(text, titleTag);
-                        desc = GetTaggedText(text, descriptionTag);
-                        tags = GetTaggedText(text, tagTag);
-                        date = GetTaggedText(text, dateTag);
-                        date.Replace(" ", "");
-                        }
-                    else if (File.Exists(descFileText))
-                        {
-                        string text = File.ReadAllText(descFileText);
-                        title = GetTaggedText(text, titleTag);
-                        desc = GetTaggedText(text, descriptionTag);
-                        tags = GetTaggedText(text, tagTag);
-                        date = GetTaggedText(text, dateTag);
-                        date.Replace(" ", "");
-                        }
-                    else
-                        {
-                        title = fileName.Replace(sourceDirectory + "\\", "").Replace("_", " ").Replace(".html", "");
-                        }
+                    string cleanFileName = fileName.Replace(sourceDirectory + "\\", "").Replace("_", " ").Replace(".html", ""); // This is the file name with no path and no file type (".html")
                     string[] splitPath = path.Split('\\');
                     string cleanPath = "";
                     for (int i = 0; i < splitPath.Length - 1; i++)
                         {
                         cleanPath += splitPath[i] + "\\";
                         }
-                    string coverImage = cleanPath + "coverImg.png";
-                    p = new Post(title, desc, path, coverImage, tags, date);
-                    posts.Add(p);
+                    if(cleanPath != "\\")
+                        {
+                        if (File.Exists(descFileMD))
+                            {
+                            string text = File.ReadAllText(descFileMD);
+                            title = GetTaggedText(text, titleTag);
+                            desc = GetTaggedText(text, descriptionTag);
+                            tags = GetTaggedText(text, tagTag);
+                            date = GetTaggedText(text, dateTag);
+                            date.Replace(" ", "");
+                            }
+                        else if (File.Exists(descFileText))
+                            {
+                            string text = File.ReadAllText(descFileText);
+                            title = GetTaggedText(text, titleTag);
+                            desc = GetTaggedText(text, descriptionTag);
+                            tags = GetTaggedText(text, tagTag);
+                            date = GetTaggedText(text, dateTag);
+                            date.Replace(" ", "");
+                            }
+                        else
+                            {
+                            title = cleanFileName;// fileName.Replace(sourceDirectory + "\\", "").Replace("_", " ").Replace(".html", "");
+                            }
+
+                        string coverImage = cleanPath + cleanFileName + "_assets\\" + "coverImg.png";
+                        p = new Post(title, desc, path, coverImage, tags, date);
+                        posts.Add(p);
+                        }
+                   
                     }
                 }
 
