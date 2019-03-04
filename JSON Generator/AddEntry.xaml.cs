@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 namespace JSON_Generator
     {
     /// <summary>
-    /// Interaction logic for AddEntry.xaml
+    /// Not used anymore, keeping it around in case I decide to add manual entry later. For now, it can't be accessed from the main window.
     /// </summary>
     public partial class AddEntry : Window
         {
