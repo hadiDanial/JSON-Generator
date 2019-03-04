@@ -31,7 +31,7 @@ namespace JSON_Generator
         const string descriptionTag = "*.desc*";
         const string tagTag = "*.tags*";
         const string dateTag = "*.date*";
-        const string version = "v.1.2.2";
+        const string version = "v.1.2.3";
 
         public MainWindow()
             {
@@ -146,7 +146,7 @@ namespace JSON_Generator
                     string desc = "";
                     string tags = "";
                     string date = "";
-                    string cleanFileName = fileName.Replace(sourceDirectory + "\\", "").Replace("_", " ").Replace(".html", ""); // This is the file name with no path and no file type (".html")
+                    string cleanFileName = fileName.Replace(sourceDirectory + "\\", "").Replace(".html", ""); // This is the file name with no path and no file type (".html")
                     string[] splitPath = path.Split('\\');
                     string cleanPath = "";
                     for (int i = 0; i < splitPath.Length - 1; i++)
@@ -175,7 +175,7 @@ namespace JSON_Generator
                             }
                         else
                             {
-                            title = cleanFileName;// fileName.Replace(sourceDirectory + "\\", "").Replace("_", " ").Replace(".html", "");
+                            title = cleanFileName.Replace("_", " ");// fileName.Replace(sourceDirectory + "\\", "").Replace("_", " ").Replace(".html", "");
                             }
 
                         string coverImage = cleanPath + cleanFileName + "_assets\\" + "coverImg.png";
