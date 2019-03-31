@@ -40,17 +40,25 @@ public class Post
         this.title = title;
         this.description = description;
         DateTime d;
+        d = GetDateTime(date);
+
+        this.date = d.Day + "." + d.Month + "." + d.Year;
+        this.path = path;
+        this.coverImage = coverImage;//path + FormatImgPath(coverImage);
+        this.tags = CreateTags(tags);
+        }
+
+    public DateTime GetDateTime(string date)
+        {
+        DateTime d;
         DateTime.TryParseExact(date, dateFormats, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out d);
 
         if (d == DateTime.MinValue)
             {
             d = DateTime.Now;
             }
-  
-        this.date = d.Day + "." + d.Month + "." + d.Year;
-        this.path = path;
-        this.coverImage = coverImage;//path + FormatImgPath(coverImage);
-        this.tags = CreateTags(tags);
+
+        return d;
         }
 
     /// <summary>

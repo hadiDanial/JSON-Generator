@@ -31,7 +31,7 @@ namespace JSON_Generator
         const string descriptionTag = "*.desc*";
         const string tagTag = "*.tags*";
         const string dateTag = "*.date*";
-        const string version = "v.1.2.3";
+        const string version = "v.1.3";
 
         public MainWindow()
             {
@@ -234,8 +234,9 @@ namespace JSON_Generator
                     }
                 else
                     {
-                    List<Post> SortedList = posts.OrderByDescending(o => o.date).ToList();
-                    posts = SortedList;
+                    //List<Post> SortedList = posts.OrderByDescending(o => o.date).ToList();
+                    posts.Sort((b, a) => DateTime.Compare(a.GetDateTime(a.date), b.GetDateTime(b.date)));
+                    //posts = SortedList;
                     GenerateJSON(true);
                     }
                 }
