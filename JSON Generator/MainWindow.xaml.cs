@@ -31,74 +31,12 @@ namespace JSON_Generator
         const string descriptionTag = "*.desc*";
         const string tagTag = "*.tags*";
         const string dateTag = "*.date*";
-        const string version = "v.1.3";
+        const string version = "v.1.4";
 
         public MainWindow()
             {
             InitializeComponent();
             }
-
-        private void AddBtn_Click(object sender, RoutedEventArgs e)
-            {
-            AddEntry addWin = new AddEntry();
-            addWin.Show();
-            addWin.Closed += AddWin_Closed;
-            this.IsEnabled = false;
-            }
-
-        private void AddWin_Closed(object sender, EventArgs e)
-            {
-            this.IsEnabled = true;
-            }
-
-        private void OpenBtn_Click(object sender, RoutedEventArgs e)
-            {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            openFileDialog.Filter = "JSON (*.json;*.txt)|*.json;*.txt|All files (*.*)|*.*";
-            if (openFileDialog.ShowDialog() == true)
-                textBox.Text = File.ReadAllText(openFileDialog.FileName);
-            }
-
-        private void saveBtn_Click(object sender, RoutedEventArgs e)
-            {
-            Microsoft.Win32.SaveFileDialog save = new Microsoft.Win32.SaveFileDialog();
-            save.Filter = "JSON (*.json)|*.json|Text (*.txt)|*.txt|All files (*.*)|*.*";
-            save.Title = "Save File";
-            //save.ShowDialog();
-            if (save.ShowDialog() == true)
-                {
-                StreamWriter writer = new StreamWriter(save.OpenFile());
-                writer.WriteLine(textBox.Text);
-                writer.Dispose();
-                writer.Close();
-                }
-            }
-
-        private void openFolderBtn_Click(object sender, RoutedEventArgs e)
-            {
-            FolderBrowserDialog diag = new FolderBrowserDialog();
-            diag.ShowNewFolderButton = false;
-            if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                folderPath = diag.SelectedPath;
-                //textBox.Text = "//Folder: " + folderPath + " contains:\n";
-                }
-            }
-
-        private void generateBtn_Click(object sender, RoutedEventArgs e)
-            {
-            if (folderPath != null && folderPath != "")
-                {
-                posts = new List<Post>();
-                ProcessDirectory(folderPath, folderPath, true);
-                GenerateJSON();
-                }
-            else
-                {
-                MessageBoxResult result = System.Windows.MessageBox.Show("No folder selected.", "Error");
-                }
-            }
-
         /// <summary>
         /// Generates JSON from the posts list.
         /// </summary>
@@ -199,24 +137,51 @@ namespace JSON_Generator
                 }
             }
 
-        private static string GetTaggedText(string text, string tag)
+        private void AddBtn_Click(object sender, RoutedEventArgs e)
             {
-            int pFrom = text.IndexOf(tag) + tag.Length;
-            int pTo = text.LastIndexOf(tag);
-            string taggedText;
-            if (pTo != -1)
+            AddEntry addWin = new AddEntry();
+            addWin.Show();
+            addWin.Closed += AddWin_Closed;
+            this.IsEnabled = false;
+            }
+
+        private void AddWin_Closed(object sender, EventArgs e)
+            {
+            this.IsEnabled = true;
+            }
+
+        private void OpenBtn_Click(object sender, RoutedEventArgs e)
+            {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            openFileDialog.Filter = "JSON (*.json;*.txt)|*.json;*.txt|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+                textBox.Text = File.ReadAllText(openFileDialog.FileName);
+            }
+
+        private void openFolderBtn_Click(object sender, RoutedEventArgs e)
+            {
+            FolderBrowserDialog diag = new FolderBrowserDialog();
+            diag.ShowNewFolderButton = false;
+            diag.SelectedPath = "K:\\Projects\\Web Dev\\PortfolioWebsite";
+            if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                taggedText = text.Substring(pFrom, pTo - pFrom);
-                taggedText.Replace("  ", " ");
-                if (taggedText[0] == ' ') taggedText.Remove(0, 1);
-                if (taggedText[taggedText.Length - 1] == ' ') taggedText.Remove(taggedText.Length - 1);
+                folderPath = diag.SelectedPath;
+                //textBox.Text = "//Folder: " + folderPath + " contains:\n";
+                }
+            }
+
+        private void generateBtn_Click(object sender, RoutedEventArgs e)
+            {
+            if (folderPath != null && folderPath != "")
+                {
+                posts = new List<Post>();
+                ProcessDirectory(folderPath, folderPath, true);
+                GenerateJSON();
                 }
             else
                 {
-                taggedText = "";
+                MessageBoxResult result = System.Windows.MessageBox.Show("No folder selected.", "Error");
                 }
-
-            return taggedText;
             }
 
         private void aboutBtn_Click(object sender, RoutedEventArgs e)
@@ -245,6 +210,83 @@ namespace JSON_Generator
                 MessageBoxResult result = System.Windows.MessageBox.Show("No folder selected.", "Error");
                 }
             }
+
+        private void saveBtn_Click(object sender, RoutedEventArgs e)
+            {
+            Microsoft.Win32.SaveFileDialog save = new Microsoft.Win32.SaveFileDialog();
+            save.Filter = "JSON (*.json)|*.json|Text (*.txt)|*.txt|All files (*.*)|*.*";
+            save.Title = "Save File";
+            //save.ShowDialog();
+            if (save.ShowDialog() == true)
+                {
+                StreamWriter writer = new StreamWriter(save.OpenFile());
+                writer.WriteLine(textBox.Text);
+                writer.Dispose();
+                writer.Close();
+                }
+            }
+
+        private void saveSiteMap_Click(object sender, RoutedEventArgs e)
+            {
+            Microsoft.Win32.SaveFileDialog save = new Microsoft.Win32.SaveFileDialog();
+            save.Filter = "HTML (*.html)|*.html|All files (*.*)|*.*";
+            save.Title = "Save Site Map";
+
+            string siteMapHTML = "";
+            string siteMapTXT = "";
+
+            siteMapTXT += "www.hadidanial.com/index.html" + Environment.NewLine;
+            siteMapTXT += "www.hadidanial.com/projects.html" + Environment.NewLine;
+            siteMapTXT += "www.hadidanial.com/blog.html" + Environment.NewLine;
+            siteMapTXT += "www.hadidanial.com/search.html" + Environment.NewLine;
+            siteMapHTML += "Index: <a href=www.hadidanial.com/index.html>Link</a><br>";
+            siteMapHTML += "Projects: <a href=www.hadidanial.com/projects.html>Link</a><br>";
+            siteMapHTML += "Blog: <a href=www.hadidanial.com/blog.html>Link</a><br>";
+            siteMapHTML += "Search: <a href=www.hadidanial.com/search.html>Link</a><br>";
+
+            for (int i = 0; i<posts.Count; i++)
+                {
+                siteMapHTML += i+". " + posts[i].title + ": <a href=" + posts[i].path + ">Link</a><br>";
+                siteMapTXT += "www.hadidanial.com" + posts[i].path + Environment.NewLine;
+                }
+            siteMapTXT = siteMapTXT.Replace("\\", "/");
+
+            //save.ShowDialog();
+            if (save.ShowDialog() == true)
+                {
+                StreamWriter writer = new StreamWriter(save.OpenFile());
+                writer.WriteLine(siteMapHTML);
+                writer.Dispose();
+                writer.Close();
+                save.FileName = save.FileName.Replace(".html", ".txt");
+                save.Filter = "Text (*.txt)|*.txt|All files (*.*)|*.*";
+                
+                writer = new StreamWriter(save.OpenFile(), Encoding.UTF8);
+                writer.WriteLine(siteMapTXT);
+                writer.Dispose();
+                writer.Close();
+                }
+            }
+        private static string GetTaggedText(string text, string tag)
+            {
+            int pFrom = text.IndexOf(tag) + tag.Length;
+            int pTo = text.LastIndexOf(tag);
+            string taggedText;
+            if (pTo != -1)
+                {
+                taggedText = text.Substring(pFrom, pTo - pFrom);
+                taggedText.Replace("  ", " ");
+                if (taggedText[0] == ' ') taggedText.Remove(0, 1);
+                if (taggedText[taggedText.Length - 1] == ' ') taggedText.Remove(taggedText.Length - 1);
+                }
+            else
+                {
+                taggedText = "";
+                }
+
+            return taggedText;
+            }
+
         }
 
 
