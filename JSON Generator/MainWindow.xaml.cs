@@ -31,7 +31,7 @@ namespace JSON_Generator
         const string descriptionTag = "*.desc*";
         const string tagTag = "*.tags*";
         const string dateTag = "*.date*";
-        const string version = "v.1.4";
+        const string version = "v.1.5";
 
         public MainWindow()
             {
@@ -216,7 +216,7 @@ namespace JSON_Generator
             Microsoft.Win32.SaveFileDialog save = new Microsoft.Win32.SaveFileDialog();
             save.Filter = "JSON (*.json)|*.json|Text (*.txt)|*.txt|All files (*.*)|*.*";
             save.Title = "Save File";
-            //save.ShowDialog();
+            save.FileName = "links.json";
             if (save.ShowDialog() == true)
                 {
                 StreamWriter writer = new StreamWriter(save.OpenFile());
@@ -235,22 +235,22 @@ namespace JSON_Generator
             string siteMapHTML = "";
             string siteMapTXT = "";
 
-            siteMapTXT += "www.hadidanial.com/index.html" + Environment.NewLine;
-            siteMapTXT += "www.hadidanial.com/projects.html" + Environment.NewLine;
-            siteMapTXT += "www.hadidanial.com/blog.html" + Environment.NewLine;
-            siteMapTXT += "www.hadidanial.com/search.html" + Environment.NewLine;
-            siteMapHTML += "Index: <a href=www.hadidanial.com/index.html>Link</a><br>";
-            siteMapHTML += "Projects: <a href=www.hadidanial.com/projects.html>Link</a><br>";
-            siteMapHTML += "Blog: <a href=www.hadidanial.com/blog.html>Link</a><br>";
-            siteMapHTML += "Search: <a href=www.hadidanial.com/search.html>Link</a><br>";
+            siteMapTXT += "http://www.hadidanial.com/index.html" + Environment.NewLine;
+            siteMapTXT += "http://www.hadidanial.com/projects.html" + Environment.NewLine;
+            siteMapTXT += "http://www.hadidanial.com/blog.html" + Environment.NewLine;
+            siteMapTXT += "http://www.hadidanial.com/search.html" + Environment.NewLine;
+            siteMapHTML += "Index: <a href=http://www.hadidanial.com/index.html>Link</a><br>";
+            siteMapHTML += "Projects: <a href=http://www.hadidanial.com/projects.html>Link</a><br>";
+            siteMapHTML += "Blog: <a href=http://www.hadidanial.com/blog.html>Link</a><br>";
+            siteMapHTML += "Search: <a href=http://www.hadidanial.com/search.html>Link</a><br>";
 
             for (int i = 0; i<posts.Count; i++)
                 {
-                siteMapHTML += i+". " + posts[i].title + ": <a href=" + posts[i].path + ">Link</a><br>";
-                siteMapTXT += "www.hadidanial.com" + posts[i].path + Environment.NewLine;
+                siteMapHTML += (i + 1) +". " + posts[i].title + ": <a href=" + posts[i].path + ">Link</a><br>";
+                siteMapTXT += "http://www.hadidanial.com" + posts[i].path + Environment.NewLine;
                 }
             siteMapTXT = siteMapTXT.Replace("\\", "/");
-
+            save.FileName = "sitemap.html";
             //save.ShowDialog();
             if (save.ShowDialog() == true)
                 {
