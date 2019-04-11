@@ -19,6 +19,6 @@
         <Button x:Name="generateBtn" Content="Generate JSON" HorizontalAlignment="Right" Margin="0,19,25,0" VerticalAlignment="Top" Width="106" Height="24" Click="generateBtn_Click" Grid.Column="1"/>
         <Button x:Name="aboutBtn" Content="About" HorizontalAlignment="Left" Margin="25,0,0,11" VerticalAlignment="Bottom" Width="106" Height="24" Click="aboutBtn_Click"/>
         <Button x:Name="sortBtn" Content="Sort by Date" HorizontalAlignment="Right" Margin="0,19,136,0" VerticalAlignment="Top" Width="106" Height="24" Grid.ColumnSpan="2" Click="sortBtn_Click"/>
-        <Button x:Name="saveSiteMap" Content="Save Site Map" HorizontalAlignment="Right" Margin="0,0,105,15" VerticalAlignment="Bottom" Width="93" Click="saveSiteMap_Click" Grid.ColumnSpan="2"/>
+        <Button x:Name="saveSiteMap" Content="Save Site Map" HorizontalAlignment="Right" Margin="0,0,-162,15" VerticalAlignment="Bottom" Width="94" Click="saveSiteMap_Click" Grid.Column="1"/>
     </Grid>
 </Window>

@@ -12,6 +12,8 @@ public class Post
     public string path;
 
     private string[] dateFormats = { "dd-MM-yyyy", "d-M-yyyy", "dd-M-yyyy", "d-MM-yyyy", "dd.MM.yyyy", "d.M.yyyy", "dd.M.yyyy", "d.MM.yyyy", "dd/MM/yyyy", "d/M/yyyy", "dd/M/yyyy", "d/MM/yyyy" };
+    private DateTime d;
+    
     /// <summary>
     /// Creates a new blog object.
     /// </summary>
@@ -23,7 +25,7 @@ public class Post
         {
         this.title = title;
         this.description = description;
-        DateTime d = DateTime.Now;
+        d = DateTime.Now;
         date = d.Day + "." + d.Month + "." + d.Year;
         path = "/" + d.Month + "." + d.Year + "/" + FormatTitle(this.title) + "/";
         this.coverImage = coverImage;
@@ -39,7 +41,6 @@ public class Post
         {
         this.title = title;
         this.description = description;
-        DateTime d;
         d = GetDateTime(date);
 
         this.date = d.Day + "." + d.Month + "." + d.Year;
@@ -50,15 +51,20 @@ public class Post
 
     public DateTime GetDateTime(string date)
         {
-        DateTime d;
-        DateTime.TryParseExact(date, dateFormats, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out d);
+        DateTime dT;
+        DateTime.TryParseExact(date, dateFormats, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dT);
 
-        if (d == DateTime.MinValue)
+        if (dT == DateTime.MinValue)
             {
-            d = DateTime.Now;
+            dT = DateTime.Now;
             }
 
-        return d;
+        return dT;
+        }
+
+    public string GetDateYMD()
+        {
+        return this.d.Year + "-" + this.d.Month + "-" + this.d.Day;
         }
 
     /// <summary>
