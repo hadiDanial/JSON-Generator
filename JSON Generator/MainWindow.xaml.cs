@@ -31,7 +31,8 @@ namespace JSON_Generator
         const string descriptionTag = "*.desc*";
         const string tagTag = "*.tags*";
         const string dateTag = "*.date*";
-        const string version = "v.1.6";
+        const string lastModTag = "*.lastMod*";
+        const string version = "v.1.7";
 
         public MainWindow()
             {
@@ -84,6 +85,7 @@ namespace JSON_Generator
                     string desc = "";
                     string tags = "";
                     string date = "";
+                    string lastMod = "";
                     string cleanFileName = fileName.Replace(sourceDirectory + "\\", "").Replace(".html", ""); // This is the file name with no path and no file type (".html")
                     string[] splitPath = path.Split('\\');
                     string cleanPath = "";
@@ -101,6 +103,8 @@ namespace JSON_Generator
                             tags = GetTaggedText(text, tagTag);
                             date = GetTaggedText(text, dateTag);
                             date.Replace(" ", "");
+                            lastMod = GetTaggedText(text, lastModTag);
+                            lastMod.Replace(" ", "");
                             }
                         else if (File.Exists(descFileText))
                             {
@@ -110,14 +114,17 @@ namespace JSON_Generator
                             tags = GetTaggedText(text, tagTag);
                             date = GetTaggedText(text, dateTag);
                             date.Replace(" ", "");
+                            lastMod = GetTaggedText(text, lastModTag);
+                            lastMod.Replace(" ", "");
                             }
                         else
                             {
                             title = cleanFileName.Replace("_", " ");// fileName.Replace(sourceDirectory + "\\", "").Replace("_", " ").Replace(".html", "");
                             }
-
+                        if (lastMod == "")
+                            lastMod = date;
                         string coverImage = cleanPath + cleanFileName + "_assets\\" + "coverImg.png";
-                        p = new Post(title, desc, path, coverImage, tags, date);
+                        p = new Post(title, desc, path, coverImage, tags, date, lastMod);
                         posts.Add(p);
                         }
                    
@@ -285,10 +292,11 @@ namespace JSON_Generator
 
             for (int i = 0; i < posts.Count; i++)
                 {
+                string p = posts[i].path.Replace("\\", "/");
                 siteMapHTML += (i + 1) + ". " + posts[i].title + ": <a href=" + posts[i].path + ">Link</a><br>";
                 siteMapTXT += "http://www.hadidanial.com" + posts[i].path + Environment.NewLine;
-                siteMapXML += "<url>" + Environment.NewLine + Environment.NewLine + "<loc>" + "http://www.hadidanial.com" + posts[i].path + "</loc>" + Environment.NewLine + Environment.NewLine;
-                siteMapXML += "<lastmod>" + posts[i].GetDateYMD() + "</lastmod>" + Environment.NewLine + Environment.NewLine + "</url>" + Environment.NewLine + Environment.NewLine;
+                siteMapXML += "<url>" + Environment.NewLine + Environment.NewLine + "<loc>" + "http://www.hadidanial.com" + p + "</loc>" + Environment.NewLine + Environment.NewLine;
+                siteMapXML += "<lastmod>" + posts[i].GetLastModDateYMD() + "</lastmod>" + Environment.NewLine + Environment.NewLine + "</url>" + Environment.NewLine + Environment.NewLine;
                 }
             siteMapXML += "</urlset>";
             siteMapTXT = siteMapTXT.Replace("\\", "/");
